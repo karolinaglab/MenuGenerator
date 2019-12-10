@@ -17,9 +17,13 @@ public class Menu {
 
     private MenuType menuType;
 
-    @ManyToOne
+   /* @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
-    private User user;
+    private User user; */
+
+    @ManyToOne
+    @JoinColumn(name="savedMenu_id", nullable=false)
+    private SavedMenus savedMenus;
 
     @ManyToMany
     @JoinTable(

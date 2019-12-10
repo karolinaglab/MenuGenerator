@@ -13,6 +13,7 @@ public class Recipe {
     private Long id;
 
     private String recipeName;
+    private String description;
     private RecipeType recipeType;
 
 

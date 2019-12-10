@@ -1,5 +1,7 @@
 package pl.karolinaglab.menugenerator.model;
 
+import pl.karolinaglab.menugenerator.enumTypes.AmountType;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +15,7 @@ public class Ingredient {
 
     private String ingrName;
 
+    private AmountType amountType;
     private int calories;
 
     @OneToMany(mappedBy = "ingredient")
