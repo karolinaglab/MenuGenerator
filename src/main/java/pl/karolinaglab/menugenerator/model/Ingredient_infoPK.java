@@ -6,8 +6,8 @@ import java.io.Serializable;
 public class Ingredient_infoPK implements Serializable {
 
 
-    private Long recipeId;
+    private int recipeId;
 
-    private Long ingrId;
+    private int ingrId;
 
 }

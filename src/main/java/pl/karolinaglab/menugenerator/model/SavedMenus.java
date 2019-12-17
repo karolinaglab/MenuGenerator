@@ -9,7 +9,7 @@ public class SavedMenus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @OneToMany(mappedBy = "savedMenus")
     private Set<Menu> menus = new HashSet<>();
@@ -17,6 +17,9 @@ public class SavedMenus {
 
     @OneToOne(mappedBy = "savedMenus")
     private User user;
+
+    public SavedMenus() {
+    }
 
     public Set<Menu> getMenus() {
         return menus;

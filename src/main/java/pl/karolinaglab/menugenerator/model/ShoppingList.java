@@ -9,11 +9,13 @@ public class ShoppingList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
    // private List<Ingredient> shoppingList = new ArrayList<>();
 
     @OneToOne(mappedBy = "shoppingList")
     private User user;
 
+    public ShoppingList() {
+    }
 }

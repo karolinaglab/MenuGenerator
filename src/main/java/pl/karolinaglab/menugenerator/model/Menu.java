@@ -13,8 +13,10 @@ public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long menuId;
+    private int menuId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
     private MenuType menuType;
 
    /* @ManyToOne
@@ -31,4 +33,41 @@ public class Menu {
             joinColumns = @JoinColumn(name = "menuId"),
             inverseJoinColumns = @JoinColumn(name = "recipeId"))
     private Set<Recipe> recipes = new HashSet<>();
+
+
+    public Menu() {
+    }
+
+    public Menu(MenuType menuType, SavedMenus savedMenus) {
+        this.menuType = menuType;
+        this.savedMenus = savedMenus;
+    }
+
+    public int getMenuId() {
+        return menuId;
+    }
+
+    public MenuType getMenuType() {
+        return menuType;
+    }
+
+    public void setMenuType(MenuType menuType) {
+        this.menuType = menuType;
+    }
+
+    public SavedMenus getSavedMenus() {
+        return savedMenus;
+    }
+
+    public void setSavedMenus(SavedMenus savedMenus) {
+        this.savedMenus = savedMenus;
+    }
+
+    public Set<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(Set<Recipe> recipes) {
+        this.recipes = recipes;
+    }
 }

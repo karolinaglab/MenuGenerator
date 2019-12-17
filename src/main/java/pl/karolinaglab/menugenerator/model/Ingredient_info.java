@@ -9,9 +9,9 @@ import java.io.Serializable;
 public class Ingredient_info{
 
     @Id
-    private long recipeId;
+    private int recipeId;
     @Id
-    private long ingrId;
+    private int ingrId;
 
     private double amount;
 

@@ -17,7 +17,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String nickname;
     private String password;
@@ -29,8 +29,10 @@ public class User {
     private double physicalActivityLevel;
     private double totalEnergyExpenditure;
     @Enumerated(EnumType.STRING)
+    @Column(length = 8)
     private Activity activity;
     @Enumerated(EnumType.STRING)
+    @Column(length = 8)
     private Sex sex;
 
 
@@ -45,6 +47,9 @@ public class User {
     @JoinColumn(name = "savedMenus_id", referencedColumnName = "id")
     private SavedMenus savedMenus;
 
+
+    public User() {
+    }
 
     public User(String nickname, String password, double bodyWeight, double height, int age, Activity activity, Sex sex) {
         this.nickname = nickname;
@@ -93,12 +98,8 @@ public class User {
         return shoppingList;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getNickname() {
