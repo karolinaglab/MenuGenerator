@@ -27,20 +27,23 @@ public class Menu {
     @JoinColumn(name="savedMenu_id", nullable=false)
     private SavedMenus savedMenus;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "menu")
+    private Set<RecipeInfo> recipeInfos = new HashSet<>();
+
+
+    /* @ManyToMany
     @JoinTable(
             name = "menu_recipes",
             joinColumns = @JoinColumn(name = "menuId"),
             inverseJoinColumns = @JoinColumn(name = "recipeId"))
-    private Set<Recipe> recipes = new HashSet<>();
+    private Set<Recipe> recipes = new HashSet<>(); */
 
 
     public Menu() {
     }
 
-    public Menu(MenuType menuType, SavedMenus savedMenus) {
+    public Menu(MenuType menuType) {
         this.menuType = menuType;
-        this.savedMenus = savedMenus;
     }
 
     public int getMenuId() {
@@ -63,11 +66,14 @@ public class Menu {
         this.savedMenus = savedMenus;
     }
 
-    public Set<Recipe> getRecipes() {
+    public Set<RecipeInfo> getRecipeInfos() {
+        return recipeInfos;
+    }
+   /* public Set<Recipe> getRecipes() {
         return recipes;
     }
 
     public void setRecipes(Set<Recipe> recipes) {
         this.recipes = recipes;
-    }
+    } */
 }

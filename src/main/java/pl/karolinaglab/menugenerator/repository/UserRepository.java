@@ -1,4 +1,9 @@
 package pl.karolinaglab.menugenerator.repository;
 
-public interface UserRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;;
+import pl.karolinaglab.menugenerator.model.User;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Integer> {
 }

@@ -1,6 +1,5 @@
 package pl.karolinaglab.menugenerator.model;
 
-import org.hibernate.annotations.NaturalId;
 import pl.karolinaglab.menugenerator.enumTypes.AmountType;
 
 import javax.persistence.*;
@@ -20,15 +19,16 @@ public class Ingredient {
     @Enumerated(EnumType.STRING)
     @Column(length = 8)
     private AmountType amountType;
-    private int calories;
+    private double calories;
 
     @OneToMany(mappedBy = "ingredient")
-    private Set<Ingredient_info> recipes = new HashSet<>();
+    //private Set<Ingredient_info> recipes = new HashSet<>();
+    private Set<Ingredient_info> ingredient_infos = new HashSet<>();
 
     public Ingredient() {
     }
 
-    public Ingredient(String ingrName, AmountType amountType, int calories) {
+    public Ingredient(String ingrName, AmountType amountType, double calories) {
         this.ingrName = ingrName;
         this.amountType = amountType;
         this.calories = calories;
@@ -58,11 +58,21 @@ public class Ingredient {
         this.amountType = amountType;
     }
 
-    public int getCalories() {
+    public double getCalories() {
         return calories;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(double calories) {
         this.calories = calories;
+    }
+
+    @Override
+    public String toString() {
+        return "Ingredient{" +
+                "id=" + id +
+                ", ingrName='" + ingrName + '\'' +
+                ", amountType=" + amountType +
+                ", calories=" + calories +
+                '}';
     }
 }

@@ -30,7 +30,7 @@ public class IngredientController {
 
         AmountType amountType = AmountType.valueOf(amountTypeString);
 
-        int calories = Integer.parseInt(caloriesString);
+        double calories = Double.parseDouble(caloriesString);
 
         Optional<Ingredient> ingredient = ingredientRepository.findByIngrName(ingredientName);
 

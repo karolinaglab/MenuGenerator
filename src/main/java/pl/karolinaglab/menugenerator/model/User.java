@@ -60,7 +60,7 @@ public class User {
         this.activity = activity;
         this.sex = sex;
 
-        if(activity.equals(LOW)) {
+       /* if(activity.equals(LOW)) {
             this.physicalActivityLevel = 1.55;
         } else if (activity.equals(AVERAGE)) {
             this.physicalActivityLevel = 1.85;
@@ -74,8 +74,32 @@ public class User {
             this.basalMetabolicRate = 65.51 + 9.567*this.bodyWeight + 1.85*this.height - 4.68*this.age;
         }
 
-        this.totalEnergyExpenditure = this.basalMetabolicRate * this.physicalActivityLevel;
+        this.totalEnergyExpenditure = this.basalMetabolicRate * this.physicalActivityLevel;*/
 
+       setTotalEnergyExpenditure(this.activity, this.sex, this.bodyWeight, this.height, this.age);
+
+    }
+
+    public void setTotalEnergyExpenditure(Activity activity, Sex sex, double bodyWeight, double height, int age) {
+        if (activity.equals(NONE)) {
+            this.physicalActivityLevel = 1.2;
+        } else if(activity.equals(LOW)) {
+            this.physicalActivityLevel = 1.3;
+        } else if (activity.equals(AVERAGE)) {
+            this.physicalActivityLevel = 1.5;
+        } else if (activity.equals(HIGH)) {
+            this.physicalActivityLevel = 1.7;
+        } else if (activity.equals(VERY_HIGH)) {
+            this.physicalActivityLevel = 1.9;
+        }
+
+        if (sex.equals(MALE)) {
+            this.basalMetabolicRate = 9.99*this.bodyWeight + 6.25*this.height - 4.92 * this.age + 5;
+        } else if (sex.equals(FEMALE)) {
+            this.basalMetabolicRate = 9.99*this.bodyWeight + 6.25*this.height - 4.92*this.age - 161;
+        }
+
+        this.totalEnergyExpenditure = this.basalMetabolicRate * this.physicalActivityLevel;
     }
 
     public double getBasalMetabolicRate() {

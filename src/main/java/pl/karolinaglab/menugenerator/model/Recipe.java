@@ -4,6 +4,7 @@ import pl.karolinaglab.menugenerator.enumTypes.RecipeType;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,21 +18,42 @@ public class Recipe {
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private RecipeType recipeType;
+    private double totalCalories;
+    private double caloriesForPortion;
+    private int numberOfPortions;
 
 
-    @ManyToMany(mappedBy = "recipes")
-    private Set<Menu> menus = new HashSet<>();
+  /*  @ManyToMany(mappedBy = "recipes")
+    private Set<Menu> menus = new HashSet<>(); */
 
     @OneToMany(mappedBy = "recipe")
-    private Set<Ingredient_info> ingredients = new HashSet<>();
+   // private Set<Ingredient_info> ingredients = new HashSet<>();
+    private Set<Ingredient_info> ingredient_infos = new HashSet<>();
+
+    @OneToMany(mappedBy = "recipe")
+    private Set<RecipeInfo> recipeInfos = new HashSet<>();
 
     public Recipe() {
     }
 
-    public Recipe(String recipeName, String description, RecipeType recipeType) {
+
+    public Recipe(String recipeName, String description, RecipeType recipeType, int numberOfPortions) {
         this.recipeName = recipeName;
         this.description = description;
         this.recipeType = recipeType;
+        this.numberOfPortions = numberOfPortions;
+
+    }
+
+    public void setTotalCalories(List<Ingredient_info> ingredientsList) {
+        double caloriesCounter = 0;
+        this.ingredient_infos =  new HashSet<>(ingredientsList);
+        for (Ingredient_info ingredient : ingredient_infos) {
+            caloriesCounter += ingredient.getIngredientCalories();
+        }
+
+        this.totalCalories = caloriesCounter;
+        this.caloriesForPortion = this.totalCalories / this.numberOfPortions;
     }
 
     public int getId() {
@@ -62,19 +84,31 @@ public class Recipe {
         this.recipeType = recipeType;
     }
 
-    public Set<Menu> getMenus() {
+  /*  public Set<Menu> getMenus() {
         return menus;
     }
 
     public void setMenus(Set<Menu> menus) {
         this.menus = menus;
+    }*/
+
+    public Set<Ingredient_info> getIngredient_infos() {
+        return ingredient_infos;
     }
 
-    public Set<Ingredient_info> getIngredients() {
-        return ingredients;
+    public void setIngredient_infos(Set<Ingredient_info> ingredient_infos) {
+        this.ingredient_infos = ingredient_infos;
     }
 
-    public void setIngredients(Set<Ingredient_info> ingredients) {
-        this.ingredients = ingredients;
+    public double getTotalCalories() {
+        return totalCalories;
+    }
+
+    public double getCaloriesForPortion() {
+        return caloriesForPortion;
+    }
+
+    public int getNumberOfPortions() {
+        return numberOfPortions;
     }
 }
