@@ -36,16 +36,16 @@ public class User {
     private Sex sex;
 
 
-   /* @OneToMany(mappedBy = "user")
-    private Set<Menu> menus = new HashSet<>();*/
+    @OneToMany(mappedBy = "user")
+    private Set<Menu> menus = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shoppingList_id", referencedColumnName = "id")
     private ShoppingList shoppingList;
 
-    @OneToOne(cascade = CascadeType.ALL)
+   /* @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "savedMenus_id", referencedColumnName = "id")
-    private SavedMenus savedMenus;
+    private SavedMenus savedMenus;*/
 
 
     public User() {
@@ -59,22 +59,6 @@ public class User {
         this.age = age;
         this.activity = activity;
         this.sex = sex;
-
-       /* if(activity.equals(LOW)) {
-            this.physicalActivityLevel = 1.55;
-        } else if (activity.equals(AVERAGE)) {
-            this.physicalActivityLevel = 1.85;
-        } else if (activity.equals(HIGH)) {
-            this.physicalActivityLevel = 2.2;
-        }
-
-        if (sex.equals(MALE)) {
-            this.basalMetabolicRate = 66.47 + 13.7*this.bodyWeight + 5.0*this.height - 6.76 * this.age;
-        } else if (sex.equals(FEMALE)) {
-            this.basalMetabolicRate = 65.51 + 9.567*this.bodyWeight + 1.85*this.height - 4.68*this.age;
-        }
-
-        this.totalEnergyExpenditure = this.basalMetabolicRate * this.physicalActivityLevel;*/
 
        setTotalEnergyExpenditure(this.activity, this.sex, this.bodyWeight, this.height, this.age);
 
@@ -180,5 +164,9 @@ public class User {
 
     public void setSex(Sex sex) {
         this.sex = sex;
+    }
+
+    public Set<Menu> getMenus() {
+        return menus;
     }
 }

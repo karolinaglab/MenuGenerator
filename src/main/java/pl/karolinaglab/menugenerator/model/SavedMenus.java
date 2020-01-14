@@ -4,10 +4,10 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+//@Entity
 public class SavedMenus {
 
-    @Id
+   /* @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -27,5 +27,5 @@ public class SavedMenus {
 
     public void setMenus(Set<Menu> menus) {
         this.menus = menus;
-    }
+    }*/
 }
