@@ -1,5 +1,6 @@
 package pl.karolinaglab.menugenerator.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 import pl.karolinaglab.menugenerator.enumTypes.RecipeType;
 
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties("recipeInfos")
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
