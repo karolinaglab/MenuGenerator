@@ -1,8 +1,11 @@
 package pl.karolinaglab.menugenerator.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
+@JsonIgnoreProperties("menu")
 public class RecipeInfo {
 
     @Id

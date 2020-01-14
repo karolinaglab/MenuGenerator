@@ -28,6 +28,8 @@ public class Ingredient_info{
     @JoinColumn(name = "ingrId")
     private Ingredient ingredient;
 
+    public Ingredient_info() {
+    }
 
     public Ingredient_info(double amount, Ingredient ingredient, Recipe recipe) {
         this.amount = amount;

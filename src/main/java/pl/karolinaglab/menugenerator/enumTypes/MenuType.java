@@ -13,11 +13,5 @@ public enum MenuType {
         public String toString() {
             return "Menu tygodniowe";
         }
-    },
-    SINGLE_MEAL{
-        @Override
-        public String toString() {
-            return "Pojedynczy posilek";
-        }
     }
 }

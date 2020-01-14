@@ -1,35 +1,28 @@
 package pl.karolinaglab.menugenerator.enumTypes;
 
-public enum RecipeType {
-
-    BREAKFAST{
+public enum FoodPreferences {
+    ALL{
         @Override
         public String toString() {
-            return "Śniadanie";
+            return "Menu zwyczajne";
         }
     },
-
-    DINNER
-            {
+    VEGETARIAN{
         @Override
         public String toString() {
-            return "Obiad";
+            return "Menu wegetariańskie";
         }
     },
-
-    SUPPER{
+    GLUTEN_FREE{
         @Override
         public String toString() {
-            return "Kolacja";
+            return "Menu bezglutenowee";
         }
     },
-
-    SECOND_MEAL{
+    LACTOSE_FREE{
         @Override
         public String toString() {
-            return "Drugi posiłek";
+            return "Menu bez laktozy";
         }
     }
-
-
 }

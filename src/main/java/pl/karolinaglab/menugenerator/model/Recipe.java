@@ -1,8 +1,10 @@
 package pl.karolinaglab.menugenerator.model;
 
+import org.hibernate.annotations.Type;
 import pl.karolinaglab.menugenerator.enumTypes.RecipeType;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +16,7 @@ public class Recipe {
     private int id;
 
     private String recipeName;
+    @Type(type="text")
     private String description;
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
@@ -21,6 +24,9 @@ public class Recipe {
     private double totalCalories;
     private double caloriesForPortion;
     private int numberOfPortions;
+    private boolean glutenFree;
+    private boolean lactoseFree;
+    private boolean vegetarian;
 
 
   /*  @ManyToMany(mappedBy = "recipes")
@@ -36,12 +42,14 @@ public class Recipe {
     public Recipe() {
     }
 
-
-    public Recipe(String recipeName, String description, RecipeType recipeType, int numberOfPortions) {
+    public Recipe(String recipeName, String description, RecipeType recipeType, int numberOfPortions, boolean glutenFree, boolean lactoseFree, boolean vegetarian) {
         this.recipeName = recipeName;
         this.description = description;
         this.recipeType = recipeType;
         this.numberOfPortions = numberOfPortions;
+        this.glutenFree = glutenFree;
+        this.lactoseFree = lactoseFree;
+        this.vegetarian = vegetarian;
 
     }
 
@@ -110,5 +118,21 @@ public class Recipe {
 
     public int getNumberOfPortions() {
         return numberOfPortions;
+    }
+
+    public boolean isGlutenFree() {
+        return glutenFree;
+    }
+
+    public boolean isLactoseFree() {
+        return lactoseFree;
+    }
+
+    public boolean isVegetarian() {
+        return vegetarian;
+    }
+
+    public Set<RecipeInfo> getRecipeInfos() {
+        return recipeInfos;
     }
 }

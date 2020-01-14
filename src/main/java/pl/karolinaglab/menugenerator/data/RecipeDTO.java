@@ -1,26 +1,36 @@
-package pl.karolinaglab.menugenerator.model;
+package pl.karolinaglab.menugenerator.data;
 
 import pl.karolinaglab.menugenerator.enumTypes.RecipeType;
 
-import javax.persistence.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class RecipeDTO {
     private String recipeName;
     private String description;
     private RecipeType recipeType;
     private int numberOfPortions;
-    private Map<String, Double> ingredientInfo = new HashMap<>();
+    private List<IngredientData> ingredientData;
+    private boolean glutenFree;
+    private boolean lactoseFree;
+    private boolean vegetarian;
 
-    public RecipeDTO(String recipeName, String description, RecipeType recipeType, int numberOfPortions, Map<String, Double> ingredientInfo) {
+    public RecipeDTO(String recipeName, String description, RecipeType recipeType, int numberOfPortions, Map<String, Double> ingredientInfo, List<IngredientData> ingredientData, boolean glutenFree, boolean lactoseFree, boolean vegetarian) {
         this.recipeName = recipeName;
         this.description = description;
         this.recipeType = recipeType;
         this.numberOfPortions = numberOfPortions;
-        this.ingredientInfo = ingredientInfo;
+        this.ingredientData = ingredientData;
+        this.glutenFree = glutenFree;
+        this.lactoseFree = lactoseFree;
+        this.vegetarian = vegetarian;
+    }
+
+    public List<IngredientData> getIngredientData() {
+        return ingredientData;
+    }
+
+    public void setIngredientData(List<IngredientData> ingredientData) {
+        this.ingredientData = ingredientData;
     }
 
     public String getRecipeName() {
@@ -55,11 +65,15 @@ public class RecipeDTO {
         this.numberOfPortions = numberOfPortions;
     }
 
-    public Map<String, Double> getIngredientInfo() {
-        return ingredientInfo;
+    public boolean isGlutenFree() {
+        return glutenFree;
     }
 
-    public void setIngredientInfo(Map<String, Double> ingredientInfo) {
-        this.ingredientInfo = ingredientInfo;
+    public boolean isLactoseFree() {
+        return lactoseFree;
+    }
+
+    public boolean isVegetarian() {
+        return vegetarian;
     }
 }
