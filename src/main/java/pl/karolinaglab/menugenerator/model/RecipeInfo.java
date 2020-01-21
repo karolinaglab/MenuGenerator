@@ -14,6 +14,7 @@ public class RecipeInfo {
     private int id;
 
     private double numberOfPortionsForUser;
+    private String recipeDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "recipeId")
@@ -26,10 +27,11 @@ public class RecipeInfo {
     public RecipeInfo() {
     }
 
-    public RecipeInfo(double numberOfPortions, Recipe recipe, Menu menu) {
+    public RecipeInfo(double numberOfPortions, Recipe recipe, Menu menu, String date) {
         this.numberOfPortionsForUser = numberOfPortions;
         this.recipe = recipe;
         this.menu = menu;
+        this.recipeDate = date;
     }
 
     public int getId() {
@@ -46,5 +48,13 @@ public class RecipeInfo {
 
     public Menu getMenu() {
         return menu;
+    }
+
+    public double getNumberOfPortionsForUser() {
+        return numberOfPortionsForUser;
+    }
+
+    public String getRecipeDate() {
+        return recipeDate;
     }
 }

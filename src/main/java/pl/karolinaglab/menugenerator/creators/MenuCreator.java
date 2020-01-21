@@ -5,13 +5,16 @@ import pl.karolinaglab.menugenerator.model.Menu;
 import pl.karolinaglab.menugenerator.model.Recipe;
 import pl.karolinaglab.menugenerator.model.RecipeInfo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class MenuCreator {
 
     public static List<RecipeInfo> createMenu(List<Recipe> breakfasts, List<Recipe> secondMeals, List<Recipe> dinners, List<Recipe> suppers, double userCalories, Menu menu) {
+
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-YYYY");
+        String dateString = format.format(date);
 
         List<RecipeInfo> recipeInfos = new ArrayList<>();
 
@@ -91,10 +94,10 @@ public class MenuCreator {
                 supperPortions = sP + 1;
             }
 
-            recipeInfos.add(new RecipeInfo(breakfastPortions, breakfastRecipe, menu));
-            recipeInfos.add(new RecipeInfo(secondMealPortions, secondMealRecipe, menu));
-            recipeInfos.add(new RecipeInfo(dinnerPortions, dinnerRecipe, menu));
-            recipeInfos.add(new RecipeInfo(supperPortions, supperRecipe, menu));
+            recipeInfos.add(new RecipeInfo(breakfastPortions, breakfastRecipe, menu, dateString));
+            recipeInfos.add(new RecipeInfo(secondMealPortions, secondMealRecipe, menu, dateString));
+            recipeInfos.add(new RecipeInfo(dinnerPortions, dinnerRecipe, menu, dateString));
+            recipeInfos.add(new RecipeInfo(supperPortions, supperRecipe, menu, dateString));
         }
         else if (menu.getMenuType().equals(MenuType.WEEKLY_MENU)) {
             for (int i = 0; i < 7; i++) {
@@ -160,10 +163,10 @@ public class MenuCreator {
                     supperPortions = sP + 1;
                 }
 
-                recipeInfos.add(new RecipeInfo(breakfastPortions, breakfastRecipe, menu));
-                recipeInfos.add(new RecipeInfo(secondMealPortions, secondMealRecipe, menu));
-                recipeInfos.add(new RecipeInfo(dinnerPortions, dinnerRecipe, menu));
-                recipeInfos.add(new RecipeInfo(supperPortions, supperRecipe, menu));
+                recipeInfos.add(new RecipeInfo(breakfastPortions, breakfastRecipe, menu,dateString));
+                recipeInfos.add(new RecipeInfo(secondMealPortions, secondMealRecipe, menu, dateString));
+                recipeInfos.add(new RecipeInfo(dinnerPortions, dinnerRecipe, menu, dateString));
+                recipeInfos.add(new RecipeInfo(supperPortions, supperRecipe, menu, dateString));
 
                 breakfasts.remove(breakfastNumber);
                 secondMeals.remove(secondMealNumber);
@@ -174,6 +177,12 @@ public class MenuCreator {
                 numberOfSecondMeals = secondMeals.size();
                 numberOfDinners = dinners.size();
                 numberOfSuppers = suppers.size();
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                cal.add(Calendar.DAY_OF_YEAR, 1);
+                date = cal.getTime();
+                dateString = format.format(date);
             }
         }
         return recipeInfos;

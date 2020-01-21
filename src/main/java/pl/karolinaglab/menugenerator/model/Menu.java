@@ -94,4 +94,8 @@ public class Menu {
     public User getUser() {
         return user;
     }
+
+    public void setRecipeInfos(Set<RecipeInfo> recipeInfos) {
+        this.recipeInfos = recipeInfos;
+    }
 }

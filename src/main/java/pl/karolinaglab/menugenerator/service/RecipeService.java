@@ -1,8 +1,10 @@
 package pl.karolinaglab.menugenerator.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pl.karolinaglab.menugenerator.data.IngredientData;
-import pl.karolinaglab.menugenerator.data.RecipeDTO;
+import pl.karolinaglab.menugenerator.payload.IngredientData;
+import pl.karolinaglab.menugenerator.payload.RecipeDTO;
 import pl.karolinaglab.menugenerator.enumTypes.RecipeType;
 import pl.karolinaglab.menugenerator.exceptions.ResourceNotFoundException;
 import pl.karolinaglab.menugenerator.model.Ingredient;
@@ -11,6 +13,7 @@ import pl.karolinaglab.menugenerator.model.Recipe;
 import pl.karolinaglab.menugenerator.repository.IngredientRepository;
 import pl.karolinaglab.menugenerator.repository.Ingredient_infoRepository;
 import pl.karolinaglab.menugenerator.repository.RecipeRepository;
+import pl.karolinaglab.menugenerator.security.UserPrincipal;
 
 import java.util.*;
 
@@ -21,12 +24,14 @@ public class RecipeService {
     final private RecipeRepository recipeRepository;
     final private Ingredient_infoRepository ingredient_infoRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(RecipeService.class);
 
     public RecipeService(IngredientRepository ingredientRepository, RecipeRepository recipeRepository, Ingredient_infoRepository ingredient_infoRepository) {
         this.ingredientRepository = ingredientRepository;
         this.recipeRepository = recipeRepository;
         this.ingredient_infoRepository = ingredient_infoRepository;
     }
+
 
     public Recipe addRecipe(RecipeDTO recipeDTO) throws Exception {
         String recipeName = recipeDTO.getRecipeName();
@@ -59,7 +64,7 @@ public class RecipeService {
         return recipeRepository.save(recipeToAdd);
     }
 
-    public Recipe getRecipe(int id) throws Exception{
+    public Recipe getRecipe(UserPrincipal currentUser, int id) throws Exception{
         Optional<Recipe> recipe = recipeRepository.findById(id);
         if (recipe.isPresent()) {
             return recipe.get();

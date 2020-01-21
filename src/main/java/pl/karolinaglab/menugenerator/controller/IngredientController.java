@@ -1,5 +1,6 @@
 package pl.karolinaglab.menugenerator.controller;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.karolinaglab.menugenerator.model.Ingredient;
 
@@ -19,6 +20,7 @@ public class IngredientController {
        this.ingredientService = ingredientService;
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/ingredient")
     public Ingredient addIngredient(@RequestBody Map<String,String> body) throws Exception{
 
@@ -28,18 +30,18 @@ public class IngredientController {
 
         return ingredientService.createIngredient(ingredientName, amountTypeString, caloriesString);
     }
-
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/ingredient/{name}")
     public Ingredient getIngredient(@PathVariable String name) throws Exception {
         return ingredientService.getIngredientByName(name);
     }
-
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/ingredient")
     public List<Ingredient> getListIngredient(@RequestParam String name) {
         return ingredientService.getIngredients(name);
     }
 
-
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/ingredient/{id}")
     public Map<String, Boolean> deleteIngredient(@PathVariable String id) throws Exception {
         return ingredientService.deleteIngredient(id);
