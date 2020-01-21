@@ -14,11 +14,9 @@ import pl.karolinaglab.menugenerator.repository.MenuRepository;
 import pl.karolinaglab.menugenerator.repository.RecipeInfoRepository;
 import pl.karolinaglab.menugenerator.repository.RecipeRepository;
 import pl.karolinaglab.menugenerator.repository.UserRepository;
+import pl.karolinaglab.menugenerator.security.UserPrincipal;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MenuService {
@@ -35,12 +33,12 @@ public class MenuService {
         this.userRepository = userRepository;
     }
 
-    public Menu createMenu(Map<String,String> body) throws Exception{
-        String idString = body.get("id");
+    public Menu createMenu(Map<String,String> body, UserPrincipal currentUser) throws Exception{
+        //String idString = body.get("id");
         String menuTypeString = body.get("menuType");
         String foodPreferencesString = body.get("foodPreferences");
 
-        int userID = Integer.parseInt(idString);
+        int userID = currentUser.getId();
         MenuType menuType = MenuType.valueOf(menuTypeString);
         FoodPreferences foodPreferences = FoodPreferences.valueOf(foodPreferencesString);
 
@@ -76,14 +74,17 @@ public class MenuService {
             Menu newMenu = new Menu(menuType, foodPreferences, user);
             double userCalories = user.getTotalEnergyExpenditure();
             menuRepository.save(newMenu);
+            Set<RecipeInfo> recipeInfoSet = new HashSet<>();
             List<RecipeInfo> recipeInfos = MenuCreator.createMenu(breakfasts, secondMeals, dinners, suppers, userCalories, newMenu);
-            for (RecipeInfo recipeInfo : recipeInfos) {
+            for (RecipeInfo recipeInfo : recipeInfos) { 
                 recipeInfoRepository.save(recipeInfo);
+                recipeInfoSet.add(recipeInfo);
             }
+            newMenu.setRecipeInfos(recipeInfoSet);
             return menuRepository.save(newMenu);
 
         } else {
-            throw new ResourceNotFoundException("User not found on : "+ idString);
+            throw new ResourceNotFoundException("User not found on : "+ userID);
         }
     }
 

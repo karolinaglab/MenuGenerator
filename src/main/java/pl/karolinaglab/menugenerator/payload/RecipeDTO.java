@@ -1,4 +1,4 @@
-package pl.karolinaglab.menugenerator.data;
+package pl.karolinaglab.menugenerator.payload;
 
 import pl.karolinaglab.menugenerator.enumTypes.RecipeType;
 

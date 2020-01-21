@@ -18,8 +18,9 @@ public class UserService {
     }
 
     public User createNewUser(Map<String,String> body) {
-        String nickname = body.get("nickname");
+        String username = body.get("username");
         String password = body.get("password");
+        String email = body.get("email");
         String heightString = body.get("height");
         String bodyWeightString = body.get("bodyWeight");
         String ageString = body.get("age");
@@ -32,7 +33,7 @@ public class UserService {
         Activity activity = Activity.valueOf(activityString);
         Sex sex = Sex.valueOf(sexString);
 
-        User newUser = new User(nickname, password, bodyWeight, height, age, activity, sex);
+        User newUser = new User(username, password, email, bodyWeight, height, age, activity, sex);
 
         return userRepository.save(newUser);
     }

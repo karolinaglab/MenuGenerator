@@ -19,7 +19,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String nickname;
+    private String username;
+    private String email;
     private String password;
 
     private double bodyWeight;
@@ -29,7 +30,7 @@ public class User {
     private double physicalActivityLevel;
     private double totalEnergyExpenditure;
     @Enumerated(EnumType.STRING)
-    @Column(length = 8)
+    @Column(length = 10)
     private Activity activity;
     @Enumerated(EnumType.STRING)
     @Column(length = 8)
@@ -43,6 +44,12 @@ public class User {
     @JoinColumn(name = "shoppingList_id", referencedColumnName = "id")
     private ShoppingList shoppingList;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
    /* @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "savedMenus_id", referencedColumnName = "id")
     private SavedMenus savedMenus;*/
@@ -51,14 +58,15 @@ public class User {
     public User() {
     }
 
-    public User(String nickname, String password, double bodyWeight, double height, int age, Activity activity, Sex sex) {
-        this.nickname = nickname;
+    public User(String username, String password, String email, double bodyWeight, double height, int age, Activity activity, Sex sex) {
+        this.username = username;
         this.password = password;
         this.bodyWeight = bodyWeight;
         this.height = height;
         this.age = age;
         this.activity = activity;
         this.sex = sex;
+        this.email = email;
 
        setTotalEnergyExpenditure(this.activity, this.sex, this.bodyWeight, this.height, this.age);
 
@@ -110,12 +118,12 @@ public class User {
         return id;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -168,5 +176,17 @@ public class User {
 
     public Set<Menu> getMenus() {
         return menus;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
