@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Table(name="Ingredient_info")
 @JsonIgnoreProperties("recipe")
 //@IdClass(Ingredient_infoPK.class)
-public class Ingredient_info{
+public class IngredientInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,10 @@ public class Ingredient_info{
     @JoinColumn(name = "ingrId")
     private Ingredient ingredient;
 
-    public Ingredient_info() {
+    public IngredientInfo() {
     }
 
-    public Ingredient_info(double amount, Ingredient ingredient, Recipe recipe) {
+    public IngredientInfo(double amount, Ingredient ingredient, Recipe recipe) {
         this.amount = amount;
         this.ingredient = ingredient;
         this.recipe = recipe;

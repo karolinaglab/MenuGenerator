@@ -5,6 +5,7 @@ import pl.karolinaglab.menugenerator.creators.MenuCreator;
 import pl.karolinaglab.menugenerator.enumTypes.FoodPreferences;
 import pl.karolinaglab.menugenerator.enumTypes.MenuType;
 import pl.karolinaglab.menugenerator.enumTypes.RecipeType;
+import pl.karolinaglab.menugenerator.exceptions.ResourceAlreadyExistException;
 import pl.karolinaglab.menugenerator.exceptions.ResourceNotFoundException;
 import pl.karolinaglab.menugenerator.model.Menu;
 import pl.karolinaglab.menugenerator.model.Recipe;
@@ -94,6 +95,25 @@ public class MenuService {
             return menu.get();
         } else {
             throw new ResourceNotFoundException("Menu not found on : " + id);
+        }
+    }
+
+    public Map<String, Boolean> deleteMenu(String id) throws Exception {
+        int menuId = Integer.parseInt(id);
+        Optional<Menu> menu = menuRepository.findById(menuId);
+        if(menu.isPresent()) {
+            Map<String, Boolean> response = new HashMap<>();
+
+            List<RecipeInfo> recipeInfos = recipeInfoRepository.findAllByMenu_MenuId(menuId);
+            for (RecipeInfo recipeInfo : recipeInfos) {
+                recipeInfoRepository.deleteById(recipeInfo.getId());
+            }
+            menuRepository.deleteById(menuId);
+            response.put("deleted", Boolean.TRUE);
+            return response;
+
+        } else {
+            throw new ResourceNotFoundException("Menu not found on : "+ menuId);
         }
     }
 }

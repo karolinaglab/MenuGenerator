@@ -3,10 +3,14 @@ package pl.karolinaglab.menugenerator.service;
 import org.springframework.stereotype.Service;
 import pl.karolinaglab.menugenerator.enumTypes.Activity;
 import pl.karolinaglab.menugenerator.enumTypes.Sex;
+import pl.karolinaglab.menugenerator.exceptions.ResourceNotFoundException;
 import pl.karolinaglab.menugenerator.model.User;
+import pl.karolinaglab.menugenerator.payload.UserResponse;
 import pl.karolinaglab.menugenerator.repository.UserRepository;
+import pl.karolinaglab.menugenerator.security.UserPrincipal;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -36,5 +40,13 @@ public class UserService {
         User newUser = new User(username, password, email, bodyWeight, height, age, activity, sex);
 
         return userRepository.save(newUser);
+    }
+
+    public UserResponse getUser(UserPrincipal currentUser) throws ResourceNotFoundException {
+        int userId = currentUser.getId();
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return new UserResponse(user.get());
+        } else throw new ResourceNotFoundException("User not found on " + userId);
     }
 }

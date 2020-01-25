@@ -3,16 +3,15 @@ package pl.karolinaglab.menugenerator.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import pl.karolinaglab.menugenerator.exceptions.ResourceAlreadyExistException;
 import pl.karolinaglab.menugenerator.payload.IngredientData;
 import pl.karolinaglab.menugenerator.payload.RecipeDTO;
 import pl.karolinaglab.menugenerator.enumTypes.RecipeType;
 import pl.karolinaglab.menugenerator.exceptions.ResourceNotFoundException;
 import pl.karolinaglab.menugenerator.model.Ingredient;
-import pl.karolinaglab.menugenerator.model.Ingredient_info;
+import pl.karolinaglab.menugenerator.model.IngredientInfo;
 import pl.karolinaglab.menugenerator.model.Recipe;
-import pl.karolinaglab.menugenerator.repository.IngredientRepository;
-import pl.karolinaglab.menugenerator.repository.Ingredient_infoRepository;
-import pl.karolinaglab.menugenerator.repository.RecipeRepository;
+import pl.karolinaglab.menugenerator.repository.*;
 import pl.karolinaglab.menugenerator.security.UserPrincipal;
 
 import java.util.*;
@@ -22,14 +21,16 @@ public class RecipeService {
 
     final private IngredientRepository ingredientRepository;
     final private RecipeRepository recipeRepository;
-    final private Ingredient_infoRepository ingredient_infoRepository;
+    final private IngredientInfoRepository ingredientInfoRepository;
+    final private RecipeInfoRepository recipeInfoRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(RecipeService.class);
 
-    public RecipeService(IngredientRepository ingredientRepository, RecipeRepository recipeRepository, Ingredient_infoRepository ingredient_infoRepository) {
+    public RecipeService(IngredientRepository ingredientRepository, RecipeRepository recipeRepository, IngredientInfoRepository ingredientInfoRepository, RecipeInfoRepository recipeInfoRepository) {
         this.ingredientRepository = ingredientRepository;
         this.recipeRepository = recipeRepository;
-        this.ingredient_infoRepository = ingredient_infoRepository;
+        this.ingredientInfoRepository = ingredientInfoRepository;
+        this.recipeInfoRepository = recipeInfoRepository;
     }
 
 
@@ -46,21 +47,21 @@ public class RecipeService {
         Recipe recipeToAdd = new Recipe(recipeName, description, recipeType, numberOfPortions, glutenFree, lactoseFree, vegetarian);
         recipeRepository.save(recipeToAdd);
 
-        List<Ingredient_info> ingredient_infos = new ArrayList<>();
+        List<IngredientInfo> ingredientInfos = new ArrayList<>();
         for (IngredientData ingredientDatum : ingredientData) {
 
             String ingredientName = ingredientDatum.getName();
             double ingredientAmount = ingredientDatum.getAmount();
             Optional<Ingredient> ingredientToAdd = ingredientRepository.findByIngrName(ingredientName);
             if (ingredientToAdd.isPresent()) {
-                Ingredient_info ingredient_infoToAdd = new Ingredient_info(ingredientAmount, ingredientToAdd.get(), recipeToAdd);
-                ingredient_infoRepository.save(ingredient_infoToAdd);
-                ingredient_infos.add(ingredient_infoToAdd);
+                IngredientInfo ingredient_infoToAdd = new IngredientInfo(ingredientAmount, ingredientToAdd.get(), recipeToAdd);
+                ingredientInfoRepository.save(ingredient_infoToAdd);
+                ingredientInfos.add(ingredient_infoToAdd);
             } else {
                 throw new ResourceNotFoundException("Ingredient not found on : " + ingredientName);
             }
         }
-        recipeToAdd.setTotalCalories(ingredient_infos);
+        recipeToAdd.setTotalCalories(ingredientInfos);
         return recipeRepository.save(recipeToAdd);
     }
 
@@ -75,5 +76,24 @@ public class RecipeService {
 
     public List<Recipe> glutenFreeRecipes(RecipeType recipeType) {
         return recipeRepository.findAllByRecipeTypeAndGlutenFreeTrue(recipeType);
+    }
+
+    public Map<String, Boolean> deleteRecipe(int id) throws Exception {
+
+        Optional<Recipe> recipeToDelete = recipeRepository.findById(id);
+        if (recipeToDelete.isPresent()) {
+            if (recipeInfoRepository.findAllByRecipeId(id).isEmpty()) {
+                List<IngredientInfo> ingredientInfos = ingredientInfoRepository.findAllByRecipeId(id);
+                for (IngredientInfo ingredientInfo : ingredientInfos) {
+                    ingredientInfoRepository.delete(ingredientInfo);
+                }
+                recipeRepository.deleteById(id);
+                Map<String, Boolean> response = new HashMap<>();
+                response.put("deleted", Boolean.TRUE);
+                return response;
+            } throw new ResourceAlreadyExistException("Recipe found in menu, You can't delete it!");
+        } else {
+            throw new ResourceNotFoundException("Recipe not found on : " + id);
+        }
     }
 }

@@ -10,6 +10,7 @@ import pl.karolinaglab.menugenerator.security.UserPrincipal;
 import pl.karolinaglab.menugenerator.service.RecipeService;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -40,5 +41,12 @@ public class RecipeController {
     @GetMapping("/recipes")
     public List<Recipe> geRecipes() {
         return recipeService.glutenFreeRecipes(RecipeType.BREAKFAST);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/recipe/{id}")
+    public Map<String, Boolean> deleteRecipe(@PathVariable String id) throws Exception {
+        int recipeId = Integer.parseInt(id);
+        return recipeService.deleteRecipe(recipeId);
     }
 }
