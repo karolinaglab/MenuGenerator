@@ -4,6 +4,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.karolinaglab.menugenerator.model.Ingredient;
 
+import pl.karolinaglab.menugenerator.payload.IngredientResponse;
 import pl.karolinaglab.menugenerator.service.IngredientService;
 
 
@@ -32,9 +33,10 @@ public class IngredientController {
     }
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/ingredient/{name}")
-    public Ingredient getIngredient(@PathVariable String name) throws Exception {
-        return ingredientService.getIngredientByName(name);
+    public IngredientResponse getIngredient(@PathVariable String name) throws Exception {
+        return ingredientService.getIngredientWithCalories(name);
     }
+
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/ingredient")
     public List<Ingredient> getListIngredient(@RequestParam String name) {

@@ -23,7 +23,7 @@ public class Ingredient {
 
     @OneToMany(mappedBy = "ingredient")
     //private Set<Ingredient_info> recipes = new HashSet<>();
-    private Set<Ingredient_info> ingredient_infos = new HashSet<>();
+    private Set<IngredientInfo> ingredient_infos = new HashSet<>();
 
     public Ingredient() {
     }

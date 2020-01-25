@@ -5,7 +5,6 @@ import org.hibernate.annotations.Type;
 import pl.karolinaglab.menugenerator.enumTypes.RecipeType;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +35,7 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe")
    // private Set<Ingredient_info> ingredients = new HashSet<>();
-    private Set<Ingredient_info> ingredient_infos = new HashSet<>();
+    private Set<IngredientInfo> ingredient_infos = new HashSet<>();
 
     @OneToMany(mappedBy = "recipe")
     private Set<RecipeInfo> recipeInfos = new HashSet<>();
@@ -55,10 +54,10 @@ public class Recipe {
 
     }
 
-    public void setTotalCalories(List<Ingredient_info> ingredientsList) {
+    public void setTotalCalories(List<IngredientInfo> ingredientsList) {
         double caloriesCounter = 0;
         this.ingredient_infos =  new HashSet<>(ingredientsList);
-        for (Ingredient_info ingredient : ingredient_infos) {
+        for (IngredientInfo ingredient : ingredient_infos) {
             caloriesCounter += ingredient.getIngredientCalories();
         }
 
@@ -102,11 +101,11 @@ public class Recipe {
         this.menus = menus;
     }*/
 
-    public Set<Ingredient_info> getIngredient_infos() {
+    public Set<IngredientInfo> getIngredient_infos() {
         return ingredient_infos;
     }
 
-    public void setIngredient_infos(Set<Ingredient_info> ingredient_infos) {
+    public void setIngredient_infos(Set<IngredientInfo> ingredient_infos) {
         this.ingredient_infos = ingredient_infos;
     }
 

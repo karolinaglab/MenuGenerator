@@ -27,7 +27,13 @@ public class MenuController {
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/menu/{id}")
-    public Menu getRecipe(@PathVariable int id) throws Exception {
+    public Menu getMenu(@PathVariable int id) throws Exception {
         return menuService.getMenu(id);
+    }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @DeleteMapping("/menu/{id}")
+    public Map<String, Boolean> deleteMenu(@PathVariable String id) throws Exception {
+        return menuService.deleteMenu(id);
     }
 }
