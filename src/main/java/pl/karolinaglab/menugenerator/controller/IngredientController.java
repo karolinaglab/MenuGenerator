@@ -38,9 +38,16 @@ public class IngredientController {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @GetMapping("/ingredient")
-    public List<Ingredient> getListIngredient(@RequestParam String name) {
+    @GetMapping("/ingredients")
+    public List<IngredientResponse> getListIngredient(@RequestParam String name) {
         return ingredientService.getIngredients(name);
+    }
+
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @GetMapping("/ingredient")
+    public List<IngredientResponse> getAllIngredients() {
+        return ingredientService.getAllIngredients();
     }
 
     @Secured("ROLE_ADMIN")

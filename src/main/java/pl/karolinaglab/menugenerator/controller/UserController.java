@@ -1,10 +1,7 @@
 package pl.karolinaglab.menugenerator.controller;
 
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.karolinaglab.menugenerator.enumTypes.Activity;
 import pl.karolinaglab.menugenerator.enumTypes.Sex;
 import pl.karolinaglab.menugenerator.exceptions.ResourceNotFoundException;
@@ -30,5 +27,11 @@ public class UserController {
     @GetMapping("/user")
     public UserResponse getUser(@CurrentUser UserPrincipal currentUser) throws ResourceNotFoundException {
         return userService.getUser(currentUser);
+    }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @PutMapping("/user")
+    public User updateUser(@CurrentUser UserPrincipal currentUser, @RequestBody Map<String,String> body) throws ResourceNotFoundException {
+        return userService.updateUser(currentUser, body);
     }
 }

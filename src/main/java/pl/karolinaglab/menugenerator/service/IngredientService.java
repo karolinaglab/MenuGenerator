@@ -9,10 +9,7 @@ import pl.karolinaglab.menugenerator.payload.IngredientResponse;
 import pl.karolinaglab.menugenerator.repository.IngredientRepository;
 import pl.karolinaglab.menugenerator.repository.IngredientInfoRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class IngredientService {
@@ -60,8 +57,28 @@ public class IngredientService {
         }
     }
 
-    public List<Ingredient> getIngredients(String name) {
-        return ingredientRepository.findByIngrNameContaining(name);
+//    public List<Ingredient> getIngredients() {
+//
+//        return ingredientRepository.findAll();
+//    }
+
+    public List<IngredientResponse> getIngredients(String name) {
+        List<IngredientResponse> ingredientResponses = new ArrayList<>();
+        List<Ingredient> ingredients = ingredientRepository.findByIngrNameContaining(name);
+        for (Ingredient ingredient : ingredients) {
+            ingredientResponses.add(new IngredientResponse(ingredient));
+        }
+        return ingredientResponses;
+    }
+
+    public List<IngredientResponse> getAllIngredients() {
+
+        List<IngredientResponse> ingredientResponses = new ArrayList<>();
+        List<Ingredient> ingredients = ingredientRepository.findAll();
+        for (Ingredient ingredient : ingredients) {
+            ingredientResponses.add(new IngredientResponse(ingredient));
+        }
+        return ingredientResponses;
     }
 
     public Map<String, Boolean> deleteIngredient(String id) throws Exception {
