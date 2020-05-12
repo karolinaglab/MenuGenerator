@@ -13,8 +13,9 @@ public class RecipeDTO {
     private boolean glutenFree;
     private boolean lactoseFree;
     private boolean vegetarian;
+    private String src;
 
-    public RecipeDTO(String recipeName, String description, RecipeType recipeType, int numberOfPortions, Map<String, Double> ingredientInfo, List<IngredientData> ingredientData, boolean glutenFree, boolean lactoseFree, boolean vegetarian) {
+    public RecipeDTO(String recipeName, String description, RecipeType recipeType, int numberOfPortions, Map<String, Double> ingredientInfo, List<IngredientData> ingredientData, boolean glutenFree, boolean lactoseFree, boolean vegetarian, String src) {
         this.recipeName = recipeName;
         this.description = description;
         this.recipeType = recipeType;
@@ -23,6 +24,7 @@ public class RecipeDTO {
         this.glutenFree = glutenFree;
         this.lactoseFree = lactoseFree;
         this.vegetarian = vegetarian;
+        this.src = src;
     }
 
     public List<IngredientData> getIngredientData() {
@@ -75,5 +77,9 @@ public class RecipeDTO {
 
     public boolean isVegetarian() {
         return vegetarian;
+    }
+
+    public String getSrc() {
+        return src;
     }
 }

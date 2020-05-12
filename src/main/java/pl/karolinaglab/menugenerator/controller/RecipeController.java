@@ -24,8 +24,8 @@ public class RecipeController {
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/recipe/{id}")
-    public Recipe getRecipe(@PathVariable int id, @CurrentUser UserPrincipal currentUser) throws Exception {
-        return recipeService.getRecipe(currentUser, id);
+    public Recipe getRecipe(@PathVariable int id) throws Exception {
+        return recipeService.getRecipe(id);
     }
 
 
@@ -39,8 +39,9 @@ public class RecipeController {
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/recipes")
-    public List<Recipe> geRecipes() {
-        return recipeService.glutenFreeRecipes(RecipeType.BREAKFAST);
+    public List<Recipe> getRecipes() {
+        return recipeService.findAllRecipes();
+        //return recipeService.glutenFreeRecipes(RecipeType.BREAKFAST);
     }
 
     @Secured("ROLE_ADMIN")

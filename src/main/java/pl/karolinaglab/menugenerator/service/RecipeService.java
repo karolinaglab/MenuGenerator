@@ -36,6 +36,7 @@ public class RecipeService {
 
     public Recipe addRecipe(RecipeDTO recipeDTO) throws Exception {
         String recipeName = recipeDTO.getRecipeName();
+        String src = recipeDTO.getSrc();
         RecipeType recipeType = recipeDTO.getRecipeType();
         int numberOfPortions = recipeDTO.getNumberOfPortions();
         String description = recipeDTO.getDescription();
@@ -44,7 +45,7 @@ public class RecipeService {
         boolean lactoseFree = recipeDTO.isLactoseFree();
         boolean vegetarian = recipeDTO.isVegetarian();
 
-        Recipe recipeToAdd = new Recipe(recipeName, description, recipeType, numberOfPortions, glutenFree, lactoseFree, vegetarian);
+        Recipe recipeToAdd = new Recipe(recipeName, description, recipeType, numberOfPortions, glutenFree, lactoseFree, vegetarian, src);
         recipeRepository.save(recipeToAdd);
 
         List<IngredientInfo> ingredientInfos = new ArrayList<>();
@@ -65,7 +66,7 @@ public class RecipeService {
         return recipeRepository.save(recipeToAdd);
     }
 
-    public Recipe getRecipe(UserPrincipal currentUser, int id) throws Exception{
+    public Recipe getRecipe(int id) throws Exception{
         Optional<Recipe> recipe = recipeRepository.findById(id);
         if (recipe.isPresent()) {
             return recipe.get();
@@ -77,6 +78,11 @@ public class RecipeService {
     public List<Recipe> glutenFreeRecipes(RecipeType recipeType) {
         return recipeRepository.findAllByRecipeTypeAndGlutenFreeTrue(recipeType);
     }
+
+    public List<Recipe> findAllRecipes() {
+        return recipeRepository.findAll();
+    }
+
 
     public Map<String, Boolean> deleteRecipe(int id) throws Exception {
 
