@@ -17,4 +17,12 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     List<Recipe> findAllByRecipeTypeAndLactoseFreeTrue(RecipeType recipeType);
 
     List<Recipe> findAllByRecipeTypeAndVegetarianTrue(RecipeType recipeType);
+
+    List<Recipe> findAllByGlutenFreeTrue();
+
+    List<Recipe> findAllByLactoseFreeTrue();
+
+    List<Recipe> findAllByVegetarianTrue();
+
+
 }

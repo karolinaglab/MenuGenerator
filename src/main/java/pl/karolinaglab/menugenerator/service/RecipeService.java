@@ -3,6 +3,7 @@ package pl.karolinaglab.menugenerator.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import pl.karolinaglab.menugenerator.enumTypes.FoodPreferences;
 import pl.karolinaglab.menugenerator.exceptions.ResourceAlreadyExistException;
 import pl.karolinaglab.menugenerator.payload.IngredientData;
 import pl.karolinaglab.menugenerator.payload.RecipeDTO;
@@ -81,6 +82,37 @@ public class RecipeService {
 
     public List<Recipe> findAllRecipes() {
         return recipeRepository.findAll();
+    }
+
+    public List<Recipe> findRecipesWithPreferences(RecipeType recipeType, FoodPreferences foodPreferences) {
+        List<Recipe> recipes = new ArrayList<>();
+        if (foodPreferences.equals(FoodPreferences.ALL)) {
+            if (recipeType.equals(RecipeType.ALL_TYPES)) {
+                recipes = recipeRepository.findAll();
+            } else {
+                recipes = recipeRepository.findByRecipeType(recipeType);
+            }
+        } else if (foodPreferences.equals(FoodPreferences.GLUTEN_FREE)) {
+            if (recipeType.equals(RecipeType.ALL_TYPES)) {
+                recipes = recipeRepository.findAllByGlutenFreeTrue();
+            } else {
+                recipes = recipeRepository.findAllByRecipeTypeAndGlutenFreeTrue(recipeType);
+            }
+        } else if (foodPreferences.equals(FoodPreferences.LACTOSE_FREE)) {
+            if (recipeType.equals(RecipeType.ALL_TYPES)) {
+                recipes = recipeRepository.findAllByLactoseFreeTrue();
+            } else {
+                recipes = recipeRepository.findAllByRecipeTypeAndLactoseFreeTrue(recipeType);
+            }
+        } else if (foodPreferences.equals(FoodPreferences.VEGETARIAN)) {
+            if (recipeType.equals(RecipeType.ALL_TYPES)) {
+                recipes = recipeRepository.findAllByVegetarianTrue();
+            } else {
+                recipes = recipeRepository.findAllByRecipeTypeAndVegetarianTrue(recipeType);
+            }
+        }
+
+        return recipes;
     }
 
 
