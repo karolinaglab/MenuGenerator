@@ -15,6 +15,7 @@ public class MenuCreator {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-YYYY");
         String dateString = format.format(date);
+        String beginningDate = dateString;
 
         List<RecipeInfo> recipeInfos = new ArrayList<>();
 
@@ -185,6 +186,9 @@ public class MenuCreator {
                 dateString = format.format(date);
             }
         }
+        String lastDate = dateString;
+        String menuDate = beginningDate + " - " + lastDate;
+        menu.setMenuDate(menuDate);
         return recipeInfos;
     }
 

@@ -70,6 +70,7 @@ public class UserService {
             userToUpdate.setAge(age);
             userToUpdate.setActivity(activity);
             userToUpdate.setSex(sex);
+            userToUpdate.setTotalEnergyExpenditure(activity, sex, bodyWeight, height, age);
             return userRepository.save(userToUpdate);
         } else throw new ResourceNotFoundException("User not found on" + currentUser.getId());
     }

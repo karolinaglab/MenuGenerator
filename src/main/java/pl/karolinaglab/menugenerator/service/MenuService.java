@@ -17,7 +17,9 @@ import pl.karolinaglab.menugenerator.repository.RecipeRepository;
 import pl.karolinaglab.menugenerator.repository.UserRepository;
 import pl.karolinaglab.menugenerator.security.UserPrincipal;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
@@ -89,14 +91,65 @@ public class MenuService {
         }
     }
 
-    public Menu getMenu(int id) throws Exception{
+//    public Menu getMenu(int id) throws Exception{
+//        Optional<Menu> menu = menuRepository.findById(id);
+//        if (menu.isPresent()) {
+//            return menu.get();
+//        } else {
+//            throw new ResourceNotFoundException("Menu not found on : " + id);
+//        }
+//    }
+
+    public List<List<RecipeInfo>> getMenu(int id) throws Exception{
         Optional<Menu> menu = menuRepository.findById(id);
         if (menu.isPresent()) {
-            return menu.get();
+
+            Set<RecipeInfo> recipeInfosSet =  menu.get().getRecipeInfos();
+            List<RecipeInfo> recipeInfos = new ArrayList<>(recipeInfosSet);
+
+            recipeInfos.sort(Comparator.comparingInt(RecipeInfo::getId));
+
+
+            List<List<RecipeInfo>> listOfRecipes = new ArrayList<>();
+            int k = 0;
+            for (int i = 0; i < recipeInfos.size(); i+=4) {
+                listOfRecipes.add(recipeInfos.subList(i,i+4));
+            }
+            return listOfRecipes;
+
         } else {
             throw new ResourceNotFoundException("Menu not found on : " + id);
         }
     }
+
+    public List<List<RecipeInfo>> getMenuForToday(UserPrincipal currentUser) throws Exception {
+        int userID = currentUser.getId();
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-YYYY");
+        String dateString = format.format(date);
+        List<RecipeInfo> recipesForToday = recipeInfoRepository.findAllByRecipeDateAndMenu_User_Id(dateString, userID);
+        List<List<RecipeInfo>> listOfRecipes = new ArrayList<>();
+        int k = 0;
+        for (int i = 0; i < recipesForToday.size(); i+=4) {
+            listOfRecipes.add(recipesForToday.subList(i,i+4));
+        }
+        if (!recipesForToday.isEmpty()) {
+            return listOfRecipes;
+        } else {
+            throw new ResourceNotFoundException("Didn't find menu for today");
+        }
+    }
+
+    public List<Menu> getAllMenu(UserPrincipal currentUser) throws Exception{
+        int userID = currentUser.getId();
+        List<Menu> allMenus = menuRepository.findAllByUser_Id(userID);
+        if (!allMenus.isEmpty()) {
+            return allMenus;
+        } else {
+            throw new ResourceNotFoundException("Didn't find menus for user");
+        }
+    }
+
 
     public Map<String, Boolean> deleteMenu(String id) throws Exception {
         int menuId = Integer.parseInt(id);

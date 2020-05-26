@@ -11,4 +11,6 @@ public interface RecipeInfoRepository extends JpaRepository<RecipeInfo, Integer>
 
     List<RecipeInfo> findAllByMenu_MenuId(int id);
     List<RecipeInfo> findAllByRecipeId(int id);
+    List<RecipeInfo> findAllByRecipeDate(String date);
+    List<RecipeInfo> findAllByRecipeDateAndMenu_User_Id(String date, int id);
 }
