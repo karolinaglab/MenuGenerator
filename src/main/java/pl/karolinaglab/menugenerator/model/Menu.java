@@ -5,10 +5,7 @@ import pl.karolinaglab.menugenerator.enumTypes.FoodPreferences;
 import pl.karolinaglab.menugenerator.enumTypes.MenuType;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @JsonIgnoreProperties("user")
@@ -26,9 +23,14 @@ public class Menu {
     @Column(length = 20)
     private FoodPreferences foodPreferences;
 
+
+    @Column(length = 40)
+    private String menuDate;
+
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private User user;
+
 
     /*@ManyToOne
     @JoinColumn(name="savedMenu_id", nullable=false)
@@ -97,5 +99,13 @@ public class Menu {
 
     public void setRecipeInfos(Set<RecipeInfo> recipeInfos) {
         this.recipeInfos = recipeInfos;
+    }
+
+    public String getMenuDate() {
+        return menuDate;
+    }
+
+    public void setMenuDate(String menuDate) {
+        this.menuDate = menuDate;
     }
 }

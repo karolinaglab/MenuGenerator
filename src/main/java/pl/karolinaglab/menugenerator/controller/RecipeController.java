@@ -2,11 +2,10 @@ package pl.karolinaglab.menugenerator.controller;
 
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import pl.karolinaglab.menugenerator.enumTypes.FoodPreferences;
 import pl.karolinaglab.menugenerator.enumTypes.RecipeType;
 import pl.karolinaglab.menugenerator.model.Recipe;
 import pl.karolinaglab.menugenerator.payload.RecipeDTO;
-import pl.karolinaglab.menugenerator.security.CurrentUser;
-import pl.karolinaglab.menugenerator.security.UserPrincipal;
 import pl.karolinaglab.menugenerator.service.RecipeService;
 
 import java.util.List;
@@ -24,8 +23,8 @@ public class RecipeController {
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/recipe/{id}")
-    public Recipe getRecipe(@PathVariable int id, @CurrentUser UserPrincipal currentUser) throws Exception {
-        return recipeService.getRecipe(currentUser, id);
+    public Recipe getRecipe(@PathVariable int id) throws Exception {
+        return recipeService.getRecipe(id);
     }
 
 
@@ -39,8 +38,16 @@ public class RecipeController {
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/recipes")
-    public List<Recipe> geRecipes() {
-        return recipeService.glutenFreeRecipes(RecipeType.BREAKFAST);
+    public List<Recipe> getRecipes() {
+        return recipeService.findAllRecipes();
+    }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @GetMapping("/chosenrecipes")
+    public List<Recipe> getRecipes(@RequestParam String type, @RequestParam String preferences) {
+        RecipeType recipeType = RecipeType.valueOf(type);
+        FoodPreferences foodPreferences = FoodPreferences.valueOf(preferences);
+        return recipeService.findRecipesWithPreferences(recipeType, foodPreferences);
     }
 
     @Secured("ROLE_ADMIN")

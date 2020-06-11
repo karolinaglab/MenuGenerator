@@ -29,6 +29,8 @@ public class Recipe {
     private boolean lactoseFree;
     private boolean vegetarian;
 
+    private String src;
+
 
   /*  @ManyToMany(mappedBy = "recipes")
     private Set<Menu> menus = new HashSet<>(); */
@@ -43,7 +45,7 @@ public class Recipe {
     public Recipe() {
     }
 
-    public Recipe(String recipeName, String description, RecipeType recipeType, int numberOfPortions, boolean glutenFree, boolean lactoseFree, boolean vegetarian) {
+    public Recipe(String recipeName, String description, RecipeType recipeType, int numberOfPortions, boolean glutenFree, boolean lactoseFree, boolean vegetarian, String src) {
         this.recipeName = recipeName;
         this.description = description;
         this.recipeType = recipeType;
@@ -51,7 +53,7 @@ public class Recipe {
         this.glutenFree = glutenFree;
         this.lactoseFree = lactoseFree;
         this.vegetarian = vegetarian;
-
+        this.src = src;
     }
 
     public void setTotalCalories(List<IngredientInfo> ingredientsList) {
@@ -93,13 +95,6 @@ public class Recipe {
         this.recipeType = recipeType;
     }
 
-  /*  public Set<Menu> getMenus() {
-        return menus;
-    }
-
-    public void setMenus(Set<Menu> menus) {
-        this.menus = menus;
-    }*/
 
     public Set<IngredientInfo> getIngredient_infos() {
         return ingredient_infos;
@@ -135,5 +130,9 @@ public class Recipe {
 
     public Set<RecipeInfo> getRecipeInfos() {
         return recipeInfos;
+    }
+
+    public String getSrc() {
+        return src;
     }
 }

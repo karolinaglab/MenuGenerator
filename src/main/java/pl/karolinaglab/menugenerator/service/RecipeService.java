@@ -3,6 +3,7 @@ package pl.karolinaglab.menugenerator.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import pl.karolinaglab.menugenerator.enumTypes.FoodPreferences;
 import pl.karolinaglab.menugenerator.exceptions.ResourceAlreadyExistException;
 import pl.karolinaglab.menugenerator.payload.IngredientData;
 import pl.karolinaglab.menugenerator.payload.RecipeDTO;
@@ -36,6 +37,7 @@ public class RecipeService {
 
     public Recipe addRecipe(RecipeDTO recipeDTO) throws Exception {
         String recipeName = recipeDTO.getRecipeName();
+        String src = recipeDTO.getSrc();
         RecipeType recipeType = recipeDTO.getRecipeType();
         int numberOfPortions = recipeDTO.getNumberOfPortions();
         String description = recipeDTO.getDescription();
@@ -44,7 +46,7 @@ public class RecipeService {
         boolean lactoseFree = recipeDTO.isLactoseFree();
         boolean vegetarian = recipeDTO.isVegetarian();
 
-        Recipe recipeToAdd = new Recipe(recipeName, description, recipeType, numberOfPortions, glutenFree, lactoseFree, vegetarian);
+        Recipe recipeToAdd = new Recipe(recipeName, description, recipeType, numberOfPortions, glutenFree, lactoseFree, vegetarian, src);
         recipeRepository.save(recipeToAdd);
 
         List<IngredientInfo> ingredientInfos = new ArrayList<>();
@@ -65,7 +67,7 @@ public class RecipeService {
         return recipeRepository.save(recipeToAdd);
     }
 
-    public Recipe getRecipe(UserPrincipal currentUser, int id) throws Exception{
+    public Recipe getRecipe(int id) throws Exception{
         Optional<Recipe> recipe = recipeRepository.findById(id);
         if (recipe.isPresent()) {
             return recipe.get();
@@ -77,6 +79,42 @@ public class RecipeService {
     public List<Recipe> glutenFreeRecipes(RecipeType recipeType) {
         return recipeRepository.findAllByRecipeTypeAndGlutenFreeTrue(recipeType);
     }
+
+    public List<Recipe> findAllRecipes() {
+        return recipeRepository.findAll();
+    }
+
+    public List<Recipe> findRecipesWithPreferences(RecipeType recipeType, FoodPreferences foodPreferences) {
+        List<Recipe> recipes = new ArrayList<>();
+        if (foodPreferences.equals(FoodPreferences.ALL)) {
+            if (recipeType.equals(RecipeType.ALL_TYPES)) {
+                recipes = recipeRepository.findAll();
+            } else {
+                recipes = recipeRepository.findByRecipeType(recipeType);
+            }
+        } else if (foodPreferences.equals(FoodPreferences.GLUTEN_FREE)) {
+            if (recipeType.equals(RecipeType.ALL_TYPES)) {
+                recipes = recipeRepository.findAllByGlutenFreeTrue();
+            } else {
+                recipes = recipeRepository.findAllByRecipeTypeAndGlutenFreeTrue(recipeType);
+            }
+        } else if (foodPreferences.equals(FoodPreferences.LACTOSE_FREE)) {
+            if (recipeType.equals(RecipeType.ALL_TYPES)) {
+                recipes = recipeRepository.findAllByLactoseFreeTrue();
+            } else {
+                recipes = recipeRepository.findAllByRecipeTypeAndLactoseFreeTrue(recipeType);
+            }
+        } else if (foodPreferences.equals(FoodPreferences.VEGETARIAN)) {
+            if (recipeType.equals(RecipeType.ALL_TYPES)) {
+                recipes = recipeRepository.findAllByVegetarianTrue();
+            } else {
+                recipes = recipeRepository.findAllByRecipeTypeAndVegetarianTrue(recipeType);
+            }
+        }
+
+        return recipes;
+    }
+
 
     public Map<String, Boolean> deleteRecipe(int id) throws Exception {
 

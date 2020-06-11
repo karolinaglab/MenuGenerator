@@ -49,4 +49,29 @@ public class UserService {
             return new UserResponse(user.get());
         } else throw new ResourceNotFoundException("User not found on " + userId);
     }
+
+    public User updateUser(UserPrincipal currentUser, Map<String,String> body) throws ResourceNotFoundException {
+        String heightString = body.get("height");
+        String bodyWeightString = body.get("bodyWeight");
+        String ageString = body.get("age");
+        String activityString = body.get("activity");
+        String sexString = body.get("sex");
+
+        double height = Double.parseDouble(heightString);
+        double bodyWeight = Double.parseDouble(bodyWeightString);
+        int age = Integer.parseInt(ageString);
+        Activity activity = Activity.valueOf(activityString);
+        Sex sex = Sex.valueOf(sexString);
+        Optional<User> user = userRepository.findById(currentUser.getId());
+        if(user.isPresent()) {
+            User userToUpdate = user.get();
+            userToUpdate.setHeight(height);
+            userToUpdate.setBodyWeight(bodyWeight);
+            userToUpdate.setAge(age);
+            userToUpdate.setActivity(activity);
+            userToUpdate.setSex(sex);
+            userToUpdate.setTotalEnergyExpenditure(activity, sex, bodyWeight, height, age);
+            return userRepository.save(userToUpdate);
+        } else throw new ResourceNotFoundException("User not found on" + currentUser.getId());
+    }
 }
